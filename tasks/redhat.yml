@@ -1,0 +1,16 @@
+---
+- name: Create mount point for shared drive
+  file:
+    path: /media/shared
+    state: directory
+    mode: 0755
+  become: true
+
+- name: Mount /media/shared drive
+  mount:
+    path: /media/shared
+    src: "{{ sharedrive_location }}"
+    fstype: nfs
+    opts: defaults
+    state: mounted
+  become: true

@@ -1,0 +1,30 @@
+---
+- name: Install NFS
+  community.general.pacman:
+    name:
+      - nfs-utils
+    state: present
+    update_cache: yes
+  become: true
+
+- name: Ensure NFS is started
+  service:
+    name: nfs-utils
+    state: started
+    enabled: yes
+
+- name: Create mount point for shared drive
+  file:
+    path: /media/shared
+    state: directory
+    mode: 0755
+  become: true
+
+- name: Mount /media/shared drive
+  mount:
+    path: /media/shared
+    src: "{{ sharedrive_location }}"
+    fstype: nfs
+    opts: defaults
+    state: mounted
+  become: true
